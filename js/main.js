@@ -126,8 +126,8 @@ const App = {
         const delayEl = document.getElementById('confirmationDelay');
         if (delayEl) {
             const places = parseInt(data.places);
-            let delaiTexte = '24 a 48 heures';
-            if (places >= 5) delaiTexte = '48 a 72 heures (traitement groupe)';
+            let delaiTexte = '10 à 20 minutes ';
+            if (places >= 5) delaiTexte = '20 à 30 minutes (traitement groupe)';
             delayEl.innerHTML = '<i class="fas fa-clock"></i><span>Delai estime de reception des QR codes : <strong>' + delaiTexte + '</strong> apres validation du paiement</span>';
         }
         
