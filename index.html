@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- ==================== MÉTADONNÉES ==================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BEACH UJA - Plateforme d'inscription et validation pour l'événement beach du 20 Juin 2026 à Songon Park, Jacqueville">
+    <meta name="keywords" content="beach, uja, inscription, événement, jacqueville, songon park">
+    <meta name="author" content="EZ DIGITAL">
+    <meta name="theme-color" content="#1a5f7a">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="BEACH UJA - Inscription & Validation">
+    <meta property="og:description" content="Vamos a la playa, family ! Inscrivez-vous pour le Beach UJA 2026">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+    
+    <title>BEACH UJA - Inscription & Validation | 20 Juin 2026</title>
+    
+    <!-- ==================== PRÉCONNEXIONS ==================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://unpkg.com">
+    
+    <!-- ==================== STYLES ==================== -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- ==================== FAVICON ==================== -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏖️</text></svg>">
+</head>
+<body>
+    <!-- ==================== PARTICULES D'ARRIÈRE-PLAN ==================== -->
+    <div class="particles" id="particles" aria-hidden="true"></div>
+    
+    <!-- ==================== CONTAINER TOAST ==================== -->
+    <div class="toast-ctr" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+    
+    <!-- ==================== BADGE SESSION ADMIN ==================== -->
+    <div id="sessionBadge" class="badge" style="display:none" aria-hidden="true">
+        <i class="fas fa-user-shield"></i> Admin
+    </div>
+
+    <!-- ==================== BOUTON FAB ADMIN ==================== -->
+    <div class="admin-fab" aria-label="Accès administration">
+        <button class="admin-btn" onclick="AdminModule.openAdminModal()" title="Administration" aria-label="Ouvrir le panneau d'administration">
+            <i class="fas fa-lock" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- ==================== MODAL DÉTAIL LOG ==================== -->
+    <div class="log-detail-modal" id="logDetailModal" role="dialog" aria-modal="true" aria-labelledby="logDetailTitle">
+        <div class="log-detail-content">
+            <button class="modal-close" onclick="Utils.closeLogDetail()" aria-label="Fermer les détails">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h3 id="logDetailTitle" style="color:var(--color-primary);margin-bottom:15px">
+                <i class="fas fa-info-circle" aria-hidden="true"></i> Détails de l'activité
+            </h3>
+            <div id="logDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- ==================== CONTENU PRINCIPAL ==================== -->
+    <main class="container" id="mainContent">
+        
+        <!-- ==================== HEADER / HERO ==================== -->
+        <header class="hero" role="banner">
+            <div class="hero-badge" aria-label="Icône plage">🌴</div>
+            <h1>
+                <span aria-hidden="true">🏖️</span>
+                BEACH UJA
+            </h1>
+            <p>Vamos a la playa, family !</p>
+        </header>
+
+        <!-- ==================== COMPTE À REBOURS ==================== -->
+        <section class="countdown-section anim-up d1" aria-label="Compte à rebours jusqu'à l'événement">
+            <div class="countdown-container">
+                <div class="countdown-header">
+                    <i class="fas fa-hourglass-half countdown-icon" aria-hidden="true"></i>
+                    <h2>J-<span id="daysRemaining">--</span> avant le Beach UJA !</h2>
+                </div>
+                <div class="countdown-grid" id="countdown" aria-live="polite" aria-atomic="true">
+                    <div class="countdown-item">
+                        <div class="countdown-circle">
+                            <span class="countdown-number" id="countdown-days">00</span>
+                        </div>
+                        <span class="countdown-label">Jours</span>
+                    </div>
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-item">
+                        <div class="countdown-circle">
+                            <span class="countdown-number" id="countdown-hours">00</span>
+                        </div>
+                        <span class="countdown-label">Heures</span>
+                    </div>
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-item">
+                        <div class="countdown-circle">
+                            <span class="countdown-number" id="countdown-minutes">00</span>
+                        </div>
+                        <span class="countdown-label">Minutes</span>
+                    </div>
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-item">
+                        <div class="countdown-circle">
+                            <span class="countdown-number" id="countdown-seconds">00</span>
+                        </div>
+                        <span class="countdown-label">Secondes</span>
+                    </div>
+                </div>
+                <p class="countdown-subtitle">📅 Rendez-vous le <strong>20 Juin 2026</strong> à <strong>Songon Park, Jacqueville</strong></p>
+            </div>
+        </section>
+
+        <!-- ==================== GRILLE PRINCIPALE ==================== -->
+        <div class="grid">
+            
+            <!-- ===== CARTE INSCRIPTION ===== -->
+            <section class="card anim-up d2" aria-labelledby="inscriptionTitle">
+                <h2 id="inscriptionTitle">
+                    <i class="fas fa-ticket-alt" aria-hidden="true"></i> Inscription
+                </h2>
+                
+                <form id="inscriptionForm" onsubmit="return false" novalidate>
+                    <!-- Nom complet -->
+                    <div class="fg">
+                        <label for="fullname">Nom complet <span aria-hidden="true">*</span></label>
+                        <div class="iw">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                            <input 
+                                type="text" 
+                                id="fullname" 
+                                name="fullname"
+                                required 
+                                placeholder="Exemple: Ezoua Emmanuel"
+                                autocomplete="name"
+                                aria-required="true"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="fg">
+                        <label for="email">Email <span aria-hidden="true">*</span></label>
+                        <div class="iw">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email"
+                                required 
+                                placeholder="exemple@email.com"
+                                autocomplete="email"
+                                aria-required="true"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- Téléphone -->
+                    <div class="fg">
+                        <label for="phone">Téléphone <span aria-hidden="true">*</span></label>
+                        <div class="iw">
+                            <i class="fas fa-phone" aria-hidden="true"></i>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                name="phone"
+                                required 
+                                placeholder="+225 XX XX XX XX"
+                                autocomplete="tel"
+                                aria-required="true"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- Nombre de places -->
+                    <div class="fg">
+                        <label for="quantity">Nombre de places de votre choix</label>
+                        <div class="iw">
+                            <i class="fas fa-users" aria-hidden="true"></i>
+                            <select 
+                                id="quantity" 
+                                name="quantity"
+                                title="Nombre de places de votre choix" 
+                                onchange="App.updatePrice()"
+                                aria-label="Sélectionner le nombre de places"
+                            >
+                                <option value="1">1 personne - 25 000 FCFA</option>
+                                <option value="2">2 personnes - 50 000 FCFA</option>
+                                <option value="3">3 personnes - 75 000 FCFA</option>
+                                <option value="4">4 personnes - 100 000 FCFA</option>
+                                <option value="5">5 personnes - 125 000 FCFA</option>
+                                <option value="6">6 personnes - 150 000 FCFA</option>
+                                <option value="7">7 personnes - 175 000 FCFA</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Commentaire -->
+                    <div class="fg">
+                        <label for="remarks">Commentaire <span class="text-muted">(optionnel)</span></label>
+                        <div class="iw">
+                            <i class="fas fa-comment" aria-hidden="true"></i>
+                            <input 
+                                type="text" 
+                                id="remarks" 
+                                name="remarks"
+                                placeholder="Allergie, régime particulier..."
+                            >
+                        </div>
+                    </div>
+                
+                    <!-- Avertissement non-remboursement -->
+                    <div class="no-refund" role="alert">
+                        <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                        <div id="refundMsg">
+                            <strong>⚠️ Important</strong><br>
+                            Aucun remboursement ne sera effectué après achat. Un QR code <strong>sera envoyé par email</strong>. En cas d'achat multiple, vous recevrez <strong>1 QR code par personne</strong>.
+                        </div>
+                    </div>
+                    
+                    <!-- Bouton de soumission -->
+                    <button 
+                        type="button" 
+                        class="btn btn-pri btn-full" 
+                        id="submitBtn" 
+                        onclick="App.submitInscription()"
+                        aria-label="Payer et s'inscrire"
+                    >
+                        <i class="fas fa-credit-card" aria-hidden="true"></i> Payer
+                    </button>
+                </form>
+            </section>
+
+            <!-- ===== CARTE PROGRAMME ===== -->
+            <section class="card anim-up d3" aria-labelledby="programmeTitle">
+                <h2 id="programmeTitle">
+                    <i class="fas fa-sun" aria-hidden="true"></i> Programme
+                </h2>
+                
+                <div class="prog-list" role="list">
+                    <span class="prog-item" role="listitem"><i class="fas fa-swimmer" aria-hidden="true"></i> Accès à la piscine</span>
+                    <span class="prog-item" role="listitem"><i class="fas fa-utensils" aria-hidden="true"></i> Buffet à volonté</span>
+                    <span class="prog-item" role="listitem"><i class="fas fa-wine-bottle" aria-hidden="true"></i> Boissons à volonté</span>
+                    <span class="prog-item" role="listitem"><i class="fas fa-volleyball-ball" aria-hidden="true"></i> Volley-ball</span>
+                    <span class="prog-item" role="listitem"><i class="fas fa-futbol" aria-hidden="true"></i> Football</span>
+                    <span class="prog-item" role="listitem"><i class="fas fa-basket-ball" aria-hidden="true"></i> Basketball</span>
+                </div>
+                
+                <div class="price-tag" aria-label="Prix: 25 000 FCFA par personne">
+                    25 000 FCFA / pers.
+                </div>
+                
+                <div class="contacts" aria-label="Informations de contact et lieu">
+                    <p><i class="fas fa-calendar-alt" aria-hidden="true"></i> <strong>Date :</strong> 20 Juin 2026</p>
+                    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> <strong>Lieu :</strong> Songon Park, Jacqueville</p>
+                    <p><i class="fas fa-bus" aria-hidden="true"></i> <strong>Transport :</strong> Car à disposition</p>
+                    <hr aria-hidden="true">
+                    <p><i class="fas fa-phone-alt" aria-hidden="true"></i> <strong>Pierre-Yvann :</strong> +225 01 73 259 352</p>
+                    <p><i class="fas fa-phone-alt" aria-hidden="true"></i> <strong>Loukou :</strong> +225 07 48 288 690</p>
+                </div>
+            </section>
+        </div>
+
+        
+       
+        <!-- ==================== FOOTER ==================== -->
+        <footer role="contentinfo">
+            <p>&copy; <time datetime="2026">2026</time> EZ DIGITAL - Tous droits réservés</p>
+        </footer>
+        
+    </main>
+
+    <!-- ==================== MODAL ADMINISTRATION ==================== -->
+    <div class="modal-overlay" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
+        <div class="modal-content">
+            
+            <!-- Bouton fermeture -->
+            <button class="modal-close" onclick="AdminModule.closeAdminModal()" aria-label="Fermer le panneau d'administration">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            
+            <!-- ===== PANNEAU DE CONNEXION ===== -->
+            <div id="adminLoginPanel">
+                <h2 id="adminModalTitle" style="color:var(--color-primary);margin-bottom:18px">
+                    <i class="fas fa-user-shield" aria-hidden="true"></i> Administrateur
+                </h2>
+                <p style="text-align:center;color:var(--color-text-light);margin-bottom:10px;">
+                    Code secret requis
+                </p>
+                
+                <div class="fg">
+                    <label for="adminCode" class="sr-only">Code secret administrateur</label>
+                    <input 
+                        type="password" 
+                        id="adminCode" 
+                        name="adminCode"
+                        placeholder="••••••••" 
+                        autocomplete="current-password"
+                        style="text-align:center;letter-spacing:4px;font-size:1.1rem;padding:14px;width:100%;"
+                        aria-label="Code secret administrateur"
+                    >
+                </div>
+                
+                <button 
+                    class="btn btn-pri btn-full" 
+                    onclick="AdminModule.checkAdminLogin()" 
+                    style="margin-top:12px"
+                    aria-label="Se connecter"
+                >
+                    <i class="fas fa-unlock" aria-hidden="true"></i> Accéder
+                </button>
+                
+                <div id="loginError" style="color:var(--color-danger);margin-top:8px;text-align:center;font-weight:600;" aria-live="assertive"></div>
+            </div>
+            
+            <!-- ===== TABLEAU DE BORD ===== -->
+            <div id="adminDashboard" style="display:none">
+                
+                <!-- En-tête dashboard -->
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:15px">
+                    <h2 style="color:var(--color-primary);margin:0">
+                        <i class="fas fa-user-shield" aria-hidden="true"></i> Administrateur
+                    </h2>
+                    <span class="live-dot" aria-label="Données en temps réel">Données en temps réel</span>
+                </div>
+                
+                <!-- Navigation par onglets -->
+                <nav class="tabs-nav" role="tablist" aria-label="Navigation administration">
+                    <button class="tab-btn active" onclick="AdminModule.switchTab('config')" role="tab" aria-selected="true" aria-controls="tab-config">
+                        <i class="fas fa-cog" aria-hidden="true"></i> Config
+                    </button>
+                    <button class="tab-btn" onclick="AdminModule.switchTab('scanner')" role="tab" aria-selected="false" aria-controls="tab-scanner">
+                        <i class="fas fa-camera" aria-hidden="true"></i> Scanner
+                    </button>
+                    <button class="tab-btn" onclick="AdminModule.switchTab('tickets')" role="tab" aria-selected="false" aria-controls="tab-tickets">
+                        <i class="fas fa-list" aria-hidden="true"></i> Tickets
+                    </button>
+                    <button class="tab-btn" onclick="AdminModule.switchTab('stats')" role="tab" aria-selected="false" aria-controls="tab-stats">
+                        <i class="fas fa-chart-bar" aria-hidden="true"></i> Stats
+                    </button>
+                    <button class="tab-btn" onclick="AdminModule.switchTab('journal')" role="tab" aria-selected="false" aria-controls="tab-journal">
+                        <i class="fas fa-history" aria-hidden="true"></i> Journal
+                    </button>
+                </nav>
+                
+                <!-- ===== TAB CONFIG ===== -->
+                <section class="tab-panel active" id="tab-config" role="tabpanel" aria-labelledby="tab-config-label">
+                    <h3 id="tab-config-label" class="sr-only">Configuration</h3>
+                    
+                    <div class="card" style="box-shadow:none;border:2px solid var(--color-accent);margin-bottom:12px">
+                        <h3 style="font-size:1.1rem">
+                            <i class="fas fa-database" aria-hidden="true"></i> Google Sheets
+                        </h3>
+                        <div class="fg">
+                            <label for="googleScriptUrl">URL Google Apps Script</label>
+                            <input 
+                                type="url" 
+                                id="googleScriptUrl" 
+                                name="googleScriptUrl"
+                                class="cfg-input" 
+                                placeholder="https://script.google.com/macros/s/.../exec"
+                            >
+                        </div>
+                        <div style="display:flex;gap:8px;margin-top:8px">
+                            <button class="btn btn-out btn-sm" onclick="AdminModule.testConnection()">
+                                <i class="fas fa-plug" aria-hidden="true"></i> Tester
+                            </button>
+                            <button class="btn btn-pri btn-sm" onclick="AdminModule.saveGoogleScriptUrl()">
+                                <i class="fas fa-save" aria-hidden="true"></i> Sauvegarder
+                            </button>
+                        </div>
+                        <div id="connectionStatus" style="margin-top:8px;font-size:.85rem" aria-live="polite"></div>
+                    </div>
+                    
+                    <div class="card" style="box-shadow:none">
+                        <h3 style="font-size:1.1rem">
+                            <i class="fas fa-envelope" aria-hidden="true"></i> EmailJS
+                        </h3>
+                        <div class="fg">
+                            <label for="emailjsUserId">Public Key</label>
+                            <input type="text" id="emailjsUserId" name="emailjsUserId" placeholder="ex: xxxxxxxxxxxxxxx" style="padding-left:16px">
+                        </div>
+                        <div class="fg">
+                            <label for="emailjsServiceId">Service ID</label>
+                            <input type="text" id="emailjsServiceId" name="emailjsServiceId" placeholder="ex: service_xxxxx" style="padding-left:16px">
+                        </div>
+                        <div class="fg">
+                            <label for="emailjsTemplateId">Template ID</label>
+                            <input type="text" id="emailjsTemplateId" name="emailjsTemplateId" placeholder="ex: template_xxxxx" style="padding-left:16px">
+                        </div>
+                        <button class="btn btn-pri btn-full" onclick="AdminModule.saveEmailJSConfig()">
+                            <i class="fas fa-save" aria-hidden="true"></i> Sauvegarder EmailJS
+                        </button>
+                        <div id="emailjsConfigStatus" style="margin-top:6px;font-size:.85rem" aria-live="polite"></div>
+                    </div>
+                </section>
+                
+                <!-- ===== TAB SCANNER ===== -->
+                <section class="tab-panel" id="tab-scanner" role="tabpanel" aria-labelledby="tab-scanner-label">
+                    <h3 id="tab-scanner-label" class="sr-only">Scanner QR Code</h3>
+                    
+                    <div style="background:linear-gradient(135deg,var(--color-primary-dark),var(--color-primary));border-radius:18px;padding:20px;text-align:center;margin-bottom:15px">
+                        <h3 style="color:var(--color-white)">
+                            <i class="fas fa-camera" aria-hidden="true"></i> Scanner QR Code
+                        </h3>
+                        <p style="color:#ddd;font-size:.8rem;margin-bottom:10px">⚠️ Usage unique par QR code</p>
+                        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+                            <button id="startScannerBtn" class="btn btn-pri btn-sm">
+                                <i class="fas fa-play" aria-hidden="true"></i> Démarrer
+                            </button>
+                            <button id="stopScannerBtn" class="btn btn-danger btn-sm">
+                                <i class="fas fa-stop" aria-hidden="true"></i> Arrêter
+                            </button>
+                            <button class="btn btn-out btn-sm camera-test-btn" onclick="ScannerModule.testCameraPermission()">
+                                <i class="fas fa-video" aria-hidden="true"></i> Tester caméra
+                            </button>
+                        </div>
+                        <div id="qr-reader" style="display:none;background:#000;border-radius:12px;margin:12px auto;max-width:380px;overflow:hidden"></div>
+                        <div id="scanResult" aria-live="polite"></div>
+                    </div>
+                    
+                    <div class="card" style="box-shadow:none">
+                        <h3 style="font-size:1.1rem">
+                            <i class="fas fa-keyboard" aria-hidden="true"></i> Validation manuelle
+                        </h3>
+                        <div style="display:flex;gap:8px">
+                            <div class="fg" style="flex:1;margin-bottom:0">
+                                <label for="manualTicketId" class="sr-only">ID du ticket</label>
+                                <input 
+                                    type="text" 
+                                    id="manualTicketId" 
+                                    name="manualTicketId"
+                                    placeholder="ID ticket (ex: UJA-xxx-P1|CODE-1)" 
+                                    style="padding-left:16px"
+                                >
+                            </div>
+                            <button class="btn btn-pri btn-sm" onclick="ScannerModule.validateManualEntry()" style="white-space:nowrap">
+                                Valider
+                            </button>
+                        </div>
+                        <div id="manualResult" style="margin-top:8px" aria-live="polite"></div>
+                    </div>
+                </section>
+                
+                <!-- ===== TAB TICKETS ===== -->
+                <section class="tab-panel" id="tab-tickets" role="tabpanel" aria-labelledby="tab-tickets-label">
+                    <h3 id="tab-tickets-label" class="sr-only">Liste des tickets</h3>
+                    
+                    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+                        <div class="fg" style="flex:1;min-width:180px;margin-bottom:0">
+                            <label for="searchInput" class="sr-only">Rechercher un ticket</label>
+                            <input 
+                                type="search" 
+                                id="searchInput" 
+                                name="searchInput"
+                                placeholder="🔍 Rechercher par nom, email, ID..." 
+                                onkeyup="AdminModule.filterTickets()" 
+                                style="padding-left:16px"
+                            >
+                        </div>
+                        <button class="btn btn-out btn-sm" onclick="AdminModule.refreshData()" aria-label="Rafraîchir les données">
+                            <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="ticketsList" style="max-height:450px;overflow-y:auto" aria-live="polite">
+                        <p style="text-align:center;color:var(--color-medium-gray);padding:20px">Chargement...</p>
+                    </div>
+                </section>
+                
+                <!-- ===== TAB STATS ===== -->
+                <section class="tab-panel" id="tab-stats" role="tabpanel" aria-labelledby="tab-stats-label">
+                    <h3 id="tab-stats-label" class="sr-only">Statistiques</h3>
+                    
+                    <div class="sg">
+                        <div class="stat-card">
+                            <h3 id="statTotal">0</h3>
+                            <p>Total Tickets</p>
+                        </div>
+                        <div class="stat-card sw">
+                            <h3 id="statPending">0</h3>
+                            <p>En attente</p>
+                        </div>
+                        <div class="stat-card ss">
+                            <h3 id="statHalf">0</h3>
+                            <p>Confirmés</p>
+                        </div>
+                        <div class="stat-card si">
+                            <h3 id="statFull">0</h3>
+                            <p>Validés</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-wrap">
+                        <canvas id="statsChart" aria-label="Graphique des statistiques" role="img"></canvas>
+                    </div>
+                    
+                    <div id="statsSummary" style="font-size:.9rem;line-height:1.8"></div>
+                    
+                    <button class="btn btn-out btn-sm" onclick="AdminModule.exportCSV()" style="margin-top:8px">
+                        <i class="fas fa-download" aria-hidden="true"></i> Export CSV
+                    </button>
+                </section>
+
+                <!-- ===== TAB JOURNAL ===== -->
+                <section class="tab-panel" id="tab-journal" role="tabpanel" aria-labelledby="tab-journal-label">
+                    <h3 id="tab-journal-label" class="sr-only">Journal des activités</h3>
+                    
+                    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+                        <button class="btn btn-out btn-sm" onclick="AdminModule.refreshJournal()">
+                            <i class="fas fa-sync-alt" aria-hidden="true"></i> Rafraîchir
+                        </button>
+                        <button class="btn btn-out btn-sm" onclick="AdminModule.exportJournal()">
+                            <i class="fas fa-download" aria-hidden="true"></i> Exporter
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="AdminModule.clearJournal()">
+                            <i class="fas fa-eraser" aria-hidden="true"></i> Nettoyer
+                        </button>
+                    </div>
+                    
+                    <!-- Filtres -->
+                    <div class="log-filter-bar">
+                        <select id="logFilterType" onchange="AdminModule.renderJournal()" aria-label="Filtrer par type d'activité">
+                            <option value="">Tous les types</option>
+                            <option value="Inscription">📝 Inscription</option>
+                            <option value="Email">📧 Email</option>
+                            <option value="Scan">✅ Scan</option>
+                            <option value="Paiement">💳 Paiement</option>
+                            <option value="Connexion">🔐 Connexion</option>
+                            <option value="Configuration">⚙️ Configuration</option>
+                            <option value="Suppression">🗑️ Suppression</option>
+                            <option value="Recherche">🔍 Recherche</option>
+                            <option value="Système">🖥️ Système</option>
+                        </select>
+                        
+                        <select id="logFilterLevel" onchange="AdminModule.renderJournal()" aria-label="Filtrer par niveau">
+                            <option value="">Tous les niveaux</option>
+                            <option value="SUCCESS">✅ Succès</option>
+                            <option value="INFO">ℹ️ Info</option>
+                            <option value="WARNING">⚠️ Attention</option>
+                            <option value="ERROR">❌ Erreur</option>
+                        </select>
+                        
+                        <input 
+                            type="search" 
+                            id="logFilterSearch" 
+                            placeholder="🔍 Rechercher dans le journal..." 
+                            onkeyup="AdminModule.renderJournal()" 
+                            style="flex:1;min-width:150px"
+                            aria-label="Rechercher dans le journal"
+                        >
+                    </div>
+                    
+                    <!-- Compteur -->
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <span style="font-weight:600;color:var(--color-primary)">
+                            <i class="fas fa-history" aria-hidden="true"></i> Journal des activités
+                        </span>
+                        <span style="font-size:.8rem;color:var(--color-medium-gray)" id="journalCount">0 entrées</span>
+                    </div>
+                    
+                    <!-- Liste des logs -->
+                    <div id="journalList" style="max-height:450px;overflow-y:auto" aria-live="polite">
+                        <p style="text-align:center;color:var(--color-medium-gray);padding:20px">Aucune activité enregistrée</p>
+                    </div>
+                    
+                    <!-- Sous-onglets Journal -->
+                    <div style="margin-top:20px;border-top:2px solid #eee;padding-top:15px">
+                        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+                            <button class="btn btn-sm btn-success" onclick="AdminModule.showScanJournal()">
+                                <i class="fas fa-qrcode" aria-hidden="true"></i> Scans
+                            </button>
+                            <button class="btn btn-sm" style="background:var(--color-info);color:#fff" onclick="AdminModule.showEmailJournal()">
+                                <i class="fas fa-envelope" aria-hidden="true"></i> Emails
+                            </button>
+                        </div>
+                        <div id="subJournalContent" aria-live="polite"></div>
+                    </div>
+                </section>
+                
+                <!-- Bouton déconnexion -->
+                <button 
+                    class="btn btn-sm btn-full" 
+                    onclick="AdminModule.logoutAdmin()" 
+                    style="margin-top:15px;background:#95a5a6;color:#fff"
+                    aria-label="Se déconnecter"
+                >
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Déconnexion
+                </button>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <!-- Bibliothèques externes -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    
+    <!-- Scripts applicatifs -->
+    <script src="js/config.js"></script>
+    <script src="js/logger.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/tickets.js"></script>
+    <script src="js/scanner.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/main.js"></script>
+
+        <!-- ==================== MODAL CONFIRMATION INSCRIPTION ==================== -->
+    <div class="modal-overlay" id="confirmationModal" role="dialog" aria-modal="true" aria-labelledby="confirmationTitle">
+        <div class="modal-content confirmation-content">
+            <button class="modal-close" onclick="App.closeConfirmation()" aria-label="Fermer la confirmation">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            
+            <!-- En-tête -->
+            <div class="confirmation-header">
+                <div class="confirmation-check">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 id="confirmationTitle">Inscription réussie !</h2>
+                <p class="confirmation-subtitle">Votre réservation a bien été enregistrée</p>
+            </div>
+            
+            <!-- Résumé de la commande -->
+            <div class="confirmation-summary" id="confirmationSummary">
+                <!-- Rempli dynamiquement -->
+            </div>
+            
+            <!-- Progression du paiement -->
+            <div class="confirmation-payment" id="confirmationPayment">
+                <h3><i class="fas fa-credit-card"></i> Paiement</h3>
+                <div class="payment-steps" id="paymentSteps">
+                    <div class="payment-step active" data-step="1">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Inscription</div>
+                        <div class="step-check"><i class="fas fa-check"></i></div>
+                    </div>
+                    <div class="payment-step-line"></div>
+                    <div class="payment-step" data-step="2">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Paiement</div>
+                        <div class="step-check"><i class="fas fa-check"></i></div>
+                    </div>
+                    <div class="payment-step-line"></div>
+                    <div class="payment-step" data-step="3">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">QR Code</div>
+                        <div class="step-check"><i class="fas fa-check"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Délai estimé -->
+            <div class="confirmation-delay" id="confirmationDelay">
+                <i class="fas fa-clock"></i>
+                <span>Délai estimé de réception des QR codes : <strong>24 à 48 heures</strong> après validation du paiement</span>
+            </div>
+            
+            <!-- Prochaine étape -->
+            <div class="confirmation-next-step" id="confirmationNextStep">
+                <h3><i class="fas fa-forward"></i> Prochaine étape</h3>
+                <p>Vous allez être redirigé vers la page de paiement sécurisée.</p>
+                <div class="redirect-timer" id="redirectTimer">
+                    Redirection dans <span id="redirectCountdown">5</span> secondes...
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="confirmation-actions">
+                <button class="btn btn-pri" onclick="App.redirectToPayment()" id="btnPayNow">
+                    <i class="fas fa-lock"></i> Payer maintenant
+                </button>
+                <button class="btn btn-out" onclick="App.closeConfirmation()">
+                    <i class="fas fa-times"></i> Fermer
+                </button>
+            </div>
+            
+            <!-- Avertissement -->
+            <div class="no-refund" style="margin-top:20px">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>⚠️ Rappel important</strong><br>
+                    Aucun remboursement ne sera effectué après paiement. Conservez bien vos QR codes.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
